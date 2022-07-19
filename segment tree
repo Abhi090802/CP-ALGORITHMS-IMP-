@@ -12,8 +12,8 @@ void updateseg2(vector<int>&st, int ss, int se, int i, int diff, int si)
     if (se != ss) 
     { 
         int mid = ss+(se-ss)/2; 
-        updateValueUtil(st, ss, mid, i, diff, 2*si + 1); 
-        updateValueUtil(st, mid+1, se, i, diff, 2*si + 2); 
+        updateseg2(st, ss, mid, i, diff, 2*si + 1); 
+        updateseg2(st, mid+1, se, i, diff, 2*si + 2); 
     } 
 } 
  
@@ -26,7 +26,7 @@ void updateseg(vector<int>&arr, vector<int>&st, int n, int i, int new_val)
     } 
     int diff = new_val - arr[i]; 
     arr[i] = new_val; 
-    updateValueUtil(st, 0, n-1, i, diff, 0); 
+    updateseg2(st, 0, n-1, i, diff, 0); 
 } 
   
 int segsum2(vector<int>&st, int ss, int se, int qs, int qe, int si) 
@@ -48,7 +48,7 @@ int segsum(vector<int>&st, int n, int l, int r)
         return -1; 
     } 
   
-    return segsum(st, 0, n-1,l,r, 0); 
+    return segsum2(st, 0, n-1,l,r, 0); 
 } 
  
 int makeseg2(vector<int>&arr, int ss, int se, vector<int>&st, int si) 
