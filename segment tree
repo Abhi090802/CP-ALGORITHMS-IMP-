@@ -4,7 +4,7 @@
 #include <bits/stdc++.h>
 using namespace std;
    
-void updateValueUtil(vector<int>&st, int ss, int se, int i, int diff, int si) 
+void updateseg2(vector<int>&st, int ss, int se, int i, int diff, int si) 
 { 
     if (i < ss || i > se) 
         return; 
@@ -17,7 +17,7 @@ void updateValueUtil(vector<int>&st, int ss, int se, int i, int diff, int si)
     } 
 } 
  
-void updateValue(vector<int>&arr, vector<int>&st, int n, int i, int new_val) 
+void updateseg(vector<int>&arr, vector<int>&st, int n, int i, int new_val) 
 {
     if (i < 0 || i > n-1) 
     { 
@@ -29,18 +29,18 @@ void updateValue(vector<int>&arr, vector<int>&st, int n, int i, int new_val)
     updateValueUtil(st, 0, n-1, i, diff, 0); 
 } 
   
-int getSumUtil(vector<int>&st, int ss, int se, int qs, int qe, int si) 
+int segsum2(vector<int>&st, int ss, int se, int qs, int qe, int si) 
 { 
     if (qs <= ss && qe >= se) 
         return st[si]; 
     if (se < qs || ss > qe) 
         return 0; 
     int mid = ss+(se-ss)/2; 
-    return getSumUtil(st, ss, mid, qs, qe, 2*si+1) + 
-        getSumUtil(st, mid+1, se, qs, qe, 2*si+2); 
+    return segsum2(st, ss, mid, qs, qe, 2*si+1) + 
+        segsum2(st, mid+1, se, qs, qe, 2*si+2); 
 } 
 
-int getSum(vector<int>&st, int n, int l, int r) 
+int segsum(vector<int>&st, int n, int l, int r) 
 { 
     if (l< 0 || r> n-1 || l> r) 
     { 
@@ -48,10 +48,10 @@ int getSum(vector<int>&st, int n, int l, int r)
         return -1; 
     } 
   
-    return getSumUtil(st, 0, n-1,l,r, 0); 
+    return segsum(st, 0, n-1,l,r, 0); 
 } 
  
-int constructSTUtil(vector<int>&arr, int ss, int se, vector<int>&st, int si) 
+int makeseg2(vector<int>&arr, int ss, int se, vector<int>&st, int si) 
 { 
     if (ss == se) 
     { 
@@ -59,17 +59,17 @@ int constructSTUtil(vector<int>&arr, int ss, int se, vector<int>&st, int si)
         return arr[ss]; 
     }
     int mid = ss+(se-ss)/2; 
-    st[si] = constructSTUtil(arr, ss, mid, st, si*2+1) + 
-            constructSTUtil(arr, mid+1, se, st, si*2+2); 
+    st[si] = makeseg2(arr, ss, mid, st, si*2+1) + 
+            makeseg2(arr, mid+1, se, st, si*2+2); 
     return st[si]; 
 } 
 
-vector<int>constructST(vector<int>&arr, int n) 
+vector<int>makeseg(vector<int>&arr, int n) 
 {
     int x = (int)(ceil(log2(n))); 
     int max_size = 2*(int)pow(2, x) - 1; 
         vector<int>st(max_size); 
-    constructSTUtil(arr, 0, n-1, st, 0); 
+    makeseg2(arr, 0, n-1, st, 0); 
     return st; 
 } 
 
@@ -77,12 +77,12 @@ int main()
 { 
     vector<int>arr = {1, 3, 5, 7, 9, 11}; 
     int n = arr.size();
-    vector<int>st= constructST(arr, n); 
-    cout<<"Sum of values in given range = "<<getSum(st, n, 1, 3)<<endl; 
+    vector<int>st= makeseg(arr, n); 
+    cout<<"Sum of values in given range = "<<segsum(st, n, 1, 3)<<endl; 
   
-    updateValue(arr, st, n, 1, 10); 
+    updateseg(arr, st, n, 1, 10); 
     cout<<"Updated sum of values in given range = "
-            <<getSum(st, n, 1, 3)<<endl; 
+            <<segsum(st, n, 1, 3)<<endl; 
     return 0; 
 } 
 
