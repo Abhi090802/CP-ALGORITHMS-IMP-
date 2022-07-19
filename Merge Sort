@@ -1,0 +1,28 @@
+// TC=O(NLOGN) SC=(N)+O(N) (ASC+ARRAY) 
+void merge(int arr[], int l, int m, int r)
+    {
+         int temp[r-l+1]; 
+         int k=0; int sec=m;  int fir=l; 
+         m++; 
+         while(l<=sec and m<=r)
+         {
+             if(arr[l]<arr[m])
+             { temp[k++]=arr[l++]; }
+             else { temp[k++]=arr[m++]; }
+         } 
+         while(l<=sec)
+         temp[k++]=arr[l++]; 
+         while(m<=r)
+         temp[k++]=arr[m++];  
+         k=0; 
+         for(int i=fir;i<=r;i++)
+         arr[i]=temp[k++]; 
+    }
+    void mergeSort(int arr[], int l, int h)
+    {
+       if(l==h) return ;
+       int mid=l+(h-l)/2;
+       mergeSort(arr,l,mid); 
+       mergeSort(arr,mid+1,h);  
+       merge(arr,l,mid,h);  
+    }
