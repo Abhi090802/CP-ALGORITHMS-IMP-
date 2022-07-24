@@ -1,0 +1,29 @@
+// TC ore union and findpar oprration is o(4*alpha) 
+// where alpha is a constant for m operations the tc will be 
+// tc=o(q) for both operations q=no. of queries.
+// sc=o(n)+o(n) // for parent and rank array 
+
+class dsu{
+ public: vector<int>parent,rank; 
+      dsu(int n)
+      {
+          rank.resize(n+2); parent.resize(n+2); 
+          for(int i=1;i<=n;i++)
+              parent[i]=i; 
+      }
+    void union(int u,int v)
+    {
+        if(rank[u]<rank[v])
+            parent[u]=v; 
+        else if(rank[v]>rank[u])
+            parent[v]=u; 
+        else if(rank[u]==rank[v])
+        { parent[u]=v; rank[v]++; }
+    }
+    int findpar(int i)
+    {
+        if(prent[i]==i)
+            return i; 
+        return parent[i]=findpar(parent[i]); 
+    }
+}; 
